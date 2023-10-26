@@ -9,7 +9,8 @@ difference of two other columns. The new array will just have features:
 ProjRushYd/ProjRushAtt, ProjRushTD, ProjRecYd/ProjRecCount, ProjRecTD, DiffPPR1
 
 @param: dataset
-@return: np array
+@return: x (n_features, n_examples)
+@return: y (n_examples, )
 """
 def load_dataset(filename):
     # Enumerate the features we want
@@ -33,8 +34,9 @@ def load_dataset(filename):
     # Change last column to labels
     new_df['DiffPPR1'] = new_df['DiffPPR1'].apply(lambda x: 0 if x < 0 else 1)
 
-
-    print(new_df)
+    # Isolate and return features and labels
+    x, y = new_df.iloc[:, [0, 1, 2, 3]].values, new_df.iloc[:, [0]].values
+    return np.array(x), np.array(y)
 
 
 # made a main function so I could debug this easily
