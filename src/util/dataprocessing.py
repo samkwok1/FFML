@@ -1,6 +1,6 @@
-import sys
 import numpy as np
 import pandas as pd
+from sklearn.model_selection import train_test_split
 
 """
 Takes in a dataset and deletes the unnecessary columns. This includes all columns that 
@@ -34,16 +34,24 @@ def load_dataset(filename):
     # Change last column to labels
     new_df['DiffPPR1'] = new_df['DiffPPR1'].apply(lambda x: 0 if x < 0 else 1)
 
-    # Isolate and return features and labels
-    x, y = new_df.iloc[:, [0, 1, 2, 3]].values, new_df.iloc[:, [0]].values
-    return np.array(x), np.array(y)
+    # Splitting 60% for training and 40% for temp (which will be further split)
+    train_df, temp_df = train_test_split(new_df, test_size=0.4, random_state=42)
+
+    # Splitting the temp_df into 50% validation and 50% test (which results in 20% of original data for both)
+    valid_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=42)
+
+    # Isolate and return features and labels (x_train, y_train, x_valid, y_valid, x_test, y_test)
+    x_train, y_train = train_df.iloc[:, [0, 1, 2, 3]].values, train_df.iloc[:, [0]].values
+    x_valid, y_valid = valid_df.iloc[:, [0, 1, 2, 3]].values, valid_df.iloc[:, [0]].values
+    x_test, y_test = test_df.iloc[:, [0, 1, 2, 3]].values, test_df.iloc[:, [0]].values
+    return np.array(x_train), np.array(y_train), np.array(x_valid), np.array(y_valid), np.array(x_test), np.array(y_test)
 
 
 # made a main function so I could debug this easily
 
-def main():
-    args = sys.argv[1:]
-    load_dataset('src/input_data/2023_rbs_wk1_thru_6/all_rb_stats.csv')
+# def main():
+#     args = sys.argv[1:]
+#     load_dataset(args[0])
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
