@@ -1,0 +1,12 @@
+name: FFML
+channels:
+  - defaults
+dependencies:
+  - numpy=1.23.3
+  - pandas=2.0.3
+  - pip
+  - python=3.9
+  - scipy
+  - pillow
+  - pip:
+    - matplotlib==3.6.0
