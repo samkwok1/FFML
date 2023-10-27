@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from math import isnan
 from sklearn.model_selection import train_test_split
 
 import sys
@@ -35,6 +36,10 @@ def load_dataset(filename):
 
     # Change last column to labels
     new_df['DiffPPR1'] = new_df['DiffPPR1'].apply(lambda x: 0 if x < 0 else 1)
+
+    # Handle NaN values from dividing by zero
+    new_df['ProjRecYdPerRec'] = new_df['ProjRecYdPerRec'].apply(lambda x: 0 if isnan(x) else x)
+    new_df['ProjRushYdPerAtt'] = new_df['ProjRushYdPerAtt'].apply(lambda x: 0 if isnan(x) else x)
 
     # Splitting 60% for training and 40% for temp (which will be further split)
     train_df, temp_df = train_test_split(new_df, test_size=0.4, random_state=42)
