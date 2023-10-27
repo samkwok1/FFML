@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
+import sys
+
 """
 Takes in a dataset and deletes the unnecessary columns. This includes all columns that 
 contain non-projection information, half and zero PPR columns, and columns that have the
@@ -41,17 +43,17 @@ def load_dataset(filename):
     valid_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=42)
 
     # Isolate and return features and labels (x_train, y_train, x_valid, y_valid, x_test, y_test)
-    x_train, y_train = train_df.iloc[:, [0, 1, 2, 3]].values, train_df.iloc[:, [0]].values
-    x_valid, y_valid = valid_df.iloc[:, [0, 1, 2, 3]].values, valid_df.iloc[:, [0]].values
-    x_test, y_test = test_df.iloc[:, [0, 1, 2, 3]].values, test_df.iloc[:, [0]].values
+    x_train, y_train = train_df.iloc[:, [0, 1, 2, 3]].values, train_df.iloc[:, [4]].values
+    x_valid, y_valid = valid_df.iloc[:, [0, 1, 2, 3]].values, valid_df.iloc[:, [4]].values
+    x_test, y_test = test_df.iloc[:, [0, 1, 2, 3]].values, test_df.iloc[:, [4]].values
     return np.array(x_train), np.array(y_train), np.array(x_valid), np.array(y_valid), np.array(x_test), np.array(y_test)
 
 
 # made a main function so I could debug this easily
 
-# def main():
-#     args = sys.argv[1:]
-#     load_dataset(args[0])
+def main():
+    args = sys.argv[1:]
+    load_dataset(args[0])
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
