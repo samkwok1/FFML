@@ -11,11 +11,12 @@ contain non-projection information, half and zero PPR columns, and columns that 
 difference of two other columns. The new array will just have features:
 ProjRushYd/ProjRushAtt, ProjRushTD, ProjRecYd/ProjRecCount, ProjRecTD, DiffPPR1
 
-@param: dataset
+@param: filename of dataset (csv)
+@param: position (wr, te, rb)
 @return: x (n_features, n_examples)
 @return: y (n_examples, )
 """
-def load_dataset(filename):
+def load_dataset(filename, position):
     # Enumerate the features we want
     allowed_col_labels = ['ProjRushYd', 'ProjRushAtt', 'ProjRushTD', 'ProjRecYd', 'ProjRecCount', 'ProjRecTD', 'DiffPPR1']
 
@@ -37,15 +38,17 @@ def load_dataset(filename):
     # Change last column to labels
     new_df['DiffPPR1'] = new_df['DiffPPR1'].apply(lambda x: 0 if x < 0 else 1)
 
-    # Handle NaN values from dividing by zero
-    new_df['ProjRecYdPerRec'] = new_df['ProjRecYdPerRec'].apply(lambda x: 0 if isnan(x) else x)
-    new_df['ProjRushYdPerAtt'] = new_df['ProjRushYdPerAtt'].apply(lambda x: 0 if isnan(x) else x)
-
     # Splitting 60% for training and 40% for temp (which will be further split)
     train_df, temp_df = train_test_split(new_df, test_size=0.4, random_state=42)
 
     # Splitting the temp_df into 50% validation and 50% test (which results in 20% of original data for both)
     valid_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=42)
+
+    if position == 'te' or position == 'wr':
+        x_train, y_train = train_df.iloc[:, [2, 3]].values, train_df.iloc[:, [4]].values
+        x_valid, y_valid = valid_df.iloc[:, [2, 3]].values, valid_df.iloc[:, [4]].values
+        x_test, y_test = test_df.iloc[:, [2, 3]].values, test_df.iloc[:, [4]].values
+        return np.array(x_train), np.array(y_train), np.array(x_valid), np.array(y_valid), np.array(x_test), np.array(y_test)
 
     # Isolate and return features and labels (x_train, y_train, x_valid, y_valid, x_test, y_test)
     x_train, y_train = train_df.iloc[:, [0, 1, 2, 3]].values, train_df.iloc[:, [4]].values
@@ -58,7 +61,7 @@ def load_dataset(filename):
 
 def main():
     args = sys.argv[1:]
-    load_dataset(args[0])
+    load_dataset(args[0], args[1])
 
 if __name__ == "__main__":
     main()
