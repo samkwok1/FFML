@@ -26,8 +26,7 @@ def main(dataset_path):
     clf.fit(x_train, y_train)
 
     probs = clf.predict(x_valid)
-    np.savetxt(probs, 'logreg_predictions.txt')
-
+    np.savetxt('logreg_predictions.txt', probs)
     plots.plot(x_valid, y_valid, clf.theta, save_path = "logreg_pred_1_plot")
 
     # *** END CODE HERE ***
@@ -66,13 +65,12 @@ class LogisticRegression:
         """
         # *** START CODE HERE ***
         n_examples, dim = x.shape
+        y = y.reshape(-1)
         self.theta = np.zeros(dim) # init theta to zeros (dim,)
 
         for i in range(self.max_iter):
             h_theta = 1 / (1 + np.exp(-np.dot(x, self.theta)))
-            print(h_theta.shape)
             H = np.matmul(x.T * (h_theta * (1 - h_theta)), x) / n_examples
-            print(H.shape)
             l = np.matmul(x.T, h_theta - y) / n_examples
 
             prevTheta = self.theta.copy()
@@ -87,8 +85,6 @@ class LogisticRegression:
             # check each iteration starting with right after first
             if normDiff < self.eps:
                 break
-
-
 
         # *** END CODE HERE ***
 
@@ -106,4 +102,4 @@ class LogisticRegression:
         # *** END CODE HERE ***
 
 if __name__ == '__main__':
-    main(rb_train_path)
+    main(te_train_path)
