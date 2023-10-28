@@ -142,7 +142,6 @@ def plot_log_reg(x, y, theta, save_path, correction=1.0):
     indicies = indicies[1:]
     all_feature_pairs = list(itertools.combinations(indicies, 2))
     for feat_1, feat_2 in all_feature_pairs:
-        print
         x_copy = x[:, [feat_1, feat_2]]
         theta_copy = [theta[0], theta[feat_1], theta[feat_2]]
 

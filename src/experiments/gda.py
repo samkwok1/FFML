@@ -27,7 +27,6 @@ def main(save_path):
     plots.plot(x_test, y_test, clf.theta, 'GDA.png')
     plots.plot_with_pca(x_test, y_test, clf.theta, 'GDA.png')
     plots.plot_all_feature_pairs(x_test, y_test, clf.theta, 'GDA.png')
-    np.savetxt(save_path, predictions)
 
 
 class GDA:
