@@ -4,19 +4,37 @@ from math import isnan
 from sklearn.model_selection import train_test_split
 
 import sys
+def add_intercept(x):
+    """Add intercept to matrix x.
 
-"""
-Takes in a dataset and deletes the unnecessary columns. This includes all columns that 
-contain non-projection information, half and zero PPR columns, and columns that have the
-difference of two other columns. The new array will just have features:
-ProjRushYd/ProjRushAtt, ProjRushTD, ProjRecYd/ProjRecCount, ProjRecTD, DiffPPR1
+    Args:
+        x: 2D NumPy array.
 
-@param: filename of dataset (csv)
-@param: position (wr, te, rb)
-@return: x (n_features, n_examples)
-@return: y (n_examples, )
-"""
-def load_dataset(filename, position, add_intercept=False):
+    Returns:
+        New matrix same as x with 1's in the 0th column.
+    """
+    new_x = np.zeros((x.shape[0], x.shape[1] + 1), dtype=x.dtype)
+    new_x[:, 0] = 1
+    new_x[:, 1:] = x
+    print("awalskjalskdjalskjdalskjd\n")
+    return new_x
+
+def load_dataset(filename, position, add_intercept):
+    """
+    Takes in a dataset and deletes the unnecessary columns. This includes all columns that 
+    contain non-projection information, half and zero PPR columns, and columns that have the
+    difference of two other columns. The new array will just have features:
+    ProjRushYd/ProjRushAtt, ProjRushTD, ProjRecYd/ProjRecCount, ProjRecTD, DiffPPR1
+
+    @param: filename of dataset (csv)
+    @param: position (wr, te, rb)
+    @return: x (n_features, n_examples)
+    @return: y (n_examples, )
+    """
+    def add_intercept_fn(x):
+        global add_intercept
+        return add_intercept(x)
+
     # Enumerate the features we want
     allowed_col_labels = ['ProjRushYd', 'ProjRushAtt', 'ProjRushTD', 'ProjRecYd', 'ProjRecCount', 'ProjRecTD', 'DiffPPR1']
 
@@ -52,13 +70,18 @@ def load_dataset(filename, position, add_intercept=False):
         x_train, y_train = train_df.iloc[:, [2, 3]].values, train_df.iloc[:, [4]].values
         x_valid, y_valid = valid_df.iloc[:, [2, 3]].values, valid_df.iloc[:, [4]].values
         x_test, y_test = test_df.iloc[:, [2, 3]].values, test_df.iloc[:, [4]].values
-        return np.array(x_train), np.array(y_train), np.array(x_valid), np.array(y_valid), np.array(x_test), np.array(y_test)
+    else:
+        # Isolate and return features and labels (x_train, y_train, x_valid, y_valid, x_test, y_test)
+        x_train, y_train = train_df.iloc[:, [0, 1, 2, 3]].values, train_df.iloc[:, [4]].values
+        x_valid, y_valid = valid_df.iloc[:, [0, 1, 2, 3]].values, valid_df.iloc[:, [4]].values
+        x_test, y_test = test_df.iloc[:, [0, 1, 2, 3]].values, test_df.iloc[:, [4]].values
 
-    # Isolate and return features and labels (x_train, y_train, x_valid, y_valid, x_test, y_test)
-    x_train, y_train = train_df.iloc[:, [0, 1, 2, 3]].values, train_df.iloc[:, [4]].values
-    x_valid, y_valid = valid_df.iloc[:, [0, 1, 2, 3]].values, valid_df.iloc[:, [4]].values
-    x_test, y_test = test_df.iloc[:, [0, 1, 2, 3]].values, test_df.iloc[:, [4]].values
-    return np.array(x_train), np.array(y_train), np.array(x_valid), np.array(y_valid), np.array(x_test), np.array(y_test)
+    if add_intercept == True:
+        x_train = add_intercept_fn(np.array(x_train))
+        x_valid = add_intercept_fn(np.array(x_valid))
+        x_test = add_intercept_fn(np.array(x_test))
+
+    return x_train, np.array(y_train), x_valid, np.array(y_valid), x_test, np.array(y_test)
 
 
 # made a main function so I could debug this easily

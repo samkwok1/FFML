@@ -81,7 +81,7 @@ def plot_with_pca(X: np.ndarray,
     ax.legend()
     plt.show()
 
-def plot_all_feature_pairs(x, y, theta, save_path, correction=1.0):
+def plot_all_feature_pairs(x, y, theta, save_path, log_reg, correction=1.0):
     """Plot dataset and fitted logistic regression parameters.
 
     Args:
@@ -124,4 +124,47 @@ def plot_all_feature_pairs(x, y, theta, save_path, correction=1.0):
         plt.legend(loc='upper right')
 
         # Show the plot
+        plt.show()
+
+def plot_log_reg(x, y, theta, save_path, correction=1.0):
+    """Plot dataset and fitted logistic regression parameters.
+
+    Args:
+        x: Matrix of training examples, one per row.
+        y: Vector of labels in {0, 1}.
+        theta: Vector of parameters for logistic regression model.
+        save_path: Path to save the plot.
+        correction: Correction factor to apply, if any.
+    """
+    # Plot dataset
+    indicies = [i for i in range(theta.shape[0])]
+    y = y.flatten()
+    indicies = indicies[1:]
+    all_feature_pairs = list(itertools.combinations(indicies, 2))
+    for feat_1, feat_2 in all_feature_pairs:
+        print
+        x_copy = x[:, [feat_1, feat_2]]
+        theta_copy = [theta[0], theta[feat_1], theta[feat_2]]
+
+        plt.figure()
+        plt.plot(x_copy[y == 1, -2], x_copy[y == 1, -1], 'bo', linewidth=2, label='Y=1')
+        plt.plot(x_copy[y == 0, -2], x_copy[y == 0, -1], 'gx', linewidth=2, label='Y=0')
+
+        # Plot decision boundary (found by solving for theta^T x = 0)
+        x1 = np.arange(min(x_copy[:, -2]), max(x_copy[:, -2]), 0.01)
+        x2 = -(theta_copy[0] / theta_copy[2] + theta_copy[1] / theta_copy[2] * x1
+            + np.log((2 - correction) / correction) / theta_copy[2])
+        for axis in ['top','bottom','left','right']:
+            plt.gca().spines[axis].set_linewidth(2)
+        plt.plot(x1, x2, c='red', linewidth=2)
+        plt.title("Prediction Boundary")
+
+        plt.xlim(x_copy[:, -2].min()-.1, x_copy[:, -2].max()+.1)
+        plt.ylim(x_copy[:, -1].min()-.1, x_copy[:, -1].max()+.1)
+        plt.xlabel('x{}'.format(feat_1 + 1), fontsize=16)
+        plt.ylabel('x{}'.format(feat_2 + 1), fontsize=16)
+        plt.xticks(fontsize=14)
+        plt.yticks(fontsize=14)
+        # Add labels and save to disk
+        plt.legend(loc='upper right')
         plt.show()

@@ -19,14 +19,14 @@ def main(dataset_path):
         valid_path: Path to CSV file containing dataset for validation.
         save_path: Path to save predicted probabilities using np.savetxt().
     """
-    x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(te_train_path, 'te')
-
+    x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(rb_train_path, 'rb', add_intercept=True)
     clf = LogisticRegression()
     clf.fit(x_train, y_train)
     predictions = clf.predict(x_train)
     # plots.plot(x_test, y_test, clf.theta, 'GDA.png')
-    # plots.plot_with_pca(x_test, y_test, clf.theta, 'GDA.png')
-    plots.plot_all_feature_pairs(x_test, y_test, clf.theta, 'GDA.png')
+    plots.plot_with_pca(x_test[:,1:], y_test, clf.theta, 'GDA.png')
+    plots.plot_all_feature_pairs(x_test[:,1:], y_test, clf.theta, 'GDA.png', True)
+    plots.plot_log_reg(x_test, y_test, clf.theta, 'log_reg.png')
     # *** END CODE HERE ***
 
 class LogisticRegression:

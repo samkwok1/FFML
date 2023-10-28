@@ -20,7 +20,7 @@ def main(save_path):
         save_path: Path to save predicted probabilities using np.savetxt().
     """
     # Load dataset
-    x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(rb_train_path, 'rb')
+    x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(rb_train_path, 'rb', add_intercept=False)
     clf = GDA()
     clf.fit(x_train, y_train)
     predictions = clf.predict(x_train)
