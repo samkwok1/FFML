@@ -93,24 +93,35 @@ def plot_all_feature_pairs(x, y, theta, save_path, correction=1.0):
     """
     # Plot dataset
     features = [i for i in range(x.shape[1])]
+    y = y.flatten()
     all_feature_pairs = list(itertools.combinations(features, 2))
     for (feat_1, feat_2) in all_feature_pairs:
         x_copy = x[:, [feat_1, feat_2]]
-        print(y.shape)
-        theta_copy = [theta[feat_1], theta[feat_2]]
-        plt.figure()
-        plt.plot(x_copy[y == 1, -2], x_copy[y == 1, -1], 'bx', linewidth=2)
-        plt.plot(x_copy[y == 0, -2], x_copy[y == 0, -1], 'go', linewidth=2)
+        # Create a new figure
+        theta_copy = [theta[0], theta[feat_1 + 1], theta[feat_2 + 1]]
+        plt.figure(figsize=(8, 6))
+        # Plot the points for y = 1 (blue crosses) and y = 0 (green circles)
+        plt.plot(x_copy[y == 1, 0], x_copy[y == 1, 1], 'bo', label='Y=1', markersize=4)
+        plt.plot(x_copy[y == 0, 0], x_copy[y == 0, 1], 'gx', label='Y=0', markersize=8)
 
-        # Plot decision boundary (found by solving for theta^T x = 0)
-        x1 = np.arange(min(x[:, -2]), max(x[:, -2]), 0.01)
-        x2 = -(theta[0] / theta_copy[2] + theta_copy[1] / theta_copy[2] * x1
+        # Plot the decision boundary
+        x1 = np.arange(x_copy[:, 0].min() - 0.1, x_copy[:, 0].max() + 0.1, 0.01)
+        x2 = x2 = -(theta_copy[0] / theta_copy[2] + theta_copy[1] / theta_copy[2] * x1
             + np.log((2 - correction) / correction) / theta_copy[2])
-        plt.plot(x1, x2, c='red', linewidth=2)
-        plt.xlim(x[:, -2].min()-.1, x[:, -2].max()+.1)
-        plt.ylim(x[:, -1].min()-.1, x[:, -1].max()+.1)
+        plt.plot(x1, x2, c='red', label='Decision Boundary', linewidth=2)
 
-        # Add labels and save to disk
-        plt.xlabel('x1')
-        plt.ylabel('x2')
+        # Set axis limits and labels
+        for axis in ['top','bottom','left','right']:
+            plt.gca().spines[axis].set_linewidth(2)
+        plt.xlim(x_copy[:, 0].min() - 0.1, x_copy[:, 0].max() + 0.1)
+        plt.ylim(x_copy[:, 1].min() - 0.1, x_copy[:, 1].max() + 0.1)
+        plt.xlabel('x{}'.format(feat_1 + 1), fontsize=16)
+        plt.ylabel('x{}'.format(feat_2 + 1), fontsize=16)
+        plt.title("Prediction Boundary")
+        plt.xticks(fontsize=14)
+        plt.yticks(fontsize=14)
+        # Add a legend
+        plt.legend(loc='upper right')
+
+        # Show the plot
         plt.show()

@@ -1,7 +1,7 @@
 import sys
 import numpy as np
 
-sys.path.append('/Users/Jonathan/cs229_final_project/FFML')
+sys.path.append('/Users/Sam/Desktop/FFML')
 
 from src.util import dataprocessing as dp
 from src.util import plots
@@ -19,18 +19,15 @@ def main(dataset_path):
         valid_path: Path to CSV file containing dataset for validation.
         save_path: Path to save predicted probabilities using np.savetxt().
     """
-    x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(dataset_path, 'te')
+    x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(te_train_path, 'te')
 
-    # *** START CODE HERE ***
     clf = LogisticRegression()
     clf.fit(x_train, y_train)
-
-    probs = clf.predict(x_valid)
-    np.savetxt('logreg_predictions.txt', probs)
-    plots.plot(x_valid, y_valid, clf.theta, save_path = "logreg_pred_1_plot")
-
+    predictions = clf.predict(x_train)
+    # plots.plot(x_test, y_test, clf.theta, 'GDA.png')
+    # plots.plot_with_pca(x_test, y_test, clf.theta, 'GDA.png')
+    plots.plot_all_feature_pairs(x_test, y_test, clf.theta, 'GDA.png')
     # *** END CODE HERE ***
-
 
 class LogisticRegression:
     """Logistic regression with Newton's Method as the solver.

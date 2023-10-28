@@ -20,10 +20,10 @@ def main(save_path):
         save_path: Path to save predicted probabilities using np.savetxt().
     """
     # Load dataset
-    x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(te_train_path, 'te')
+    x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(rb_train_path, 'rb')
     clf = GDA()
     clf.fit(x_train, y_train)
-    predictions = clf.predict(x_valid)
+    predictions = clf.predict(x_train)
     plots.plot(x_test, y_test, clf.theta, 'GDA.png')
     plots.plot_with_pca(x_test, y_test, clf.theta, 'GDA.png')
     plots.plot_all_feature_pairs(x_test, y_test, clf.theta, 'GDA.png')
@@ -72,6 +72,8 @@ class GDA:
         for i in range(x.shape[0]):
             mu = mu_1 if y[i] == 1 else mu_0
             Sigma += (np.outer((x[i] - mu), (x[i] - mu).T) / x.shape[0])
+
+        
 
         theta_0 = 0.5 * (mu_0.T @ np.linalg.inv(Sigma) @ mu_0 - mu_1.T @ np.linalg.inv(Sigma) @ mu_1) - np.log(phi_0 / phi_1)
         theta = -np.linalg.inv(Sigma) @ (mu_0 - mu_1)
