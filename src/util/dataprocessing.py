@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from math import isnan
 from sklearn.model_selection import train_test_split
 
 import sys
@@ -15,7 +16,7 @@ ProjRushYd/ProjRushAtt, ProjRushTD, ProjRecYd/ProjRecCount, ProjRecTD, DiffPPR1
 @return: x (n_features, n_examples)
 @return: y (n_examples, )
 """
-def load_dataset(filename, position):
+def load_dataset(filename, position, add_intercept=False):
     # Enumerate the features we want
     allowed_col_labels = ['ProjRushYd', 'ProjRushAtt', 'ProjRushTD', 'ProjRecYd', 'ProjRecCount', 'ProjRecTD', 'DiffPPR1']
 
@@ -36,6 +37,10 @@ def load_dataset(filename, position):
 
     # Change last column to labels
     new_df['DiffPPR1'] = new_df['DiffPPR1'].apply(lambda x: 0 if x < 0 else 1)
+
+    # Replace any NaN values with 0
+    for col in new_df:
+        new_df[col] = new_df[col].apply(lambda x: 0 if isnan(x) else x)
 
     # Splitting 60% for training and 40% for temp (which will be further split)
     train_df, temp_df = train_test_split(new_df, test_size=0.4, random_state=42)
