@@ -1,17 +1,15 @@
 import sys
 import numpy as np
 
-sys.path.append('/Users/Sam/Desktop/FFML')
-
-from src.util import dataprocessing as dp
-from src.util import plots
+from util import dataprocessing as dp
+from util import plots
 
 rb_train_path = "src/input_data/RBs/all_rb_stats.csv"
 te_train_path = "src/input_data/tight_ends/all_te_stats.csv"
 wr_train_path = "src/input_data/wrs/all_wr_stats.csv"
 
 
-def main(dataset_path):
+def main(save_path, train_path, pos):
     """Problem: Logistic regression with Newton's Method.
 
     Args:
@@ -19,14 +17,13 @@ def main(dataset_path):
         valid_path: Path to CSV file containing dataset for validation.
         save_path: Path to save predicted probabilities using np.savetxt().
     """
-    x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(rb_train_path, 'rb', add_intercept=True)
+    x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(train_path, pos, add_intercept=True)
     clf = LogisticRegression()
     clf.fit(x_train, y_train)
     predictions = clf.predict(x_train)
     # plots.plot(x_test, y_test, clf.theta, 'GDA.png')
-    plots.plot_with_pca(x_test[:,1:], y_test, clf.theta, 'GDA.png')
-    plots.plot_all_feature_pairs(x_test[:,1:], y_test, clf.theta, 'GDA.png', True)
-    plots.plot_log_reg(x_test, y_test, clf.theta, 'log_reg.png')
+    plots.plot_with_pca(x_test[:,1:], y_test, clf.theta, save_path=save_path)
+    plots.plot_all_feature_pairs(x_test[:,1:], y_test, clf.theta, save_path, True)
     # *** END CODE HERE ***
 
 class LogisticRegression:
@@ -99,4 +96,4 @@ class LogisticRegression:
         # *** END CODE HERE ***
 
 if __name__ == '__main__':
-    main(te_train_path)
+    main()

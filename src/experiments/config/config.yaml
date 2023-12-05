@@ -1,0 +1,12 @@
+hydra:
+  run:
+    dir: ${sim.sim_dir}/${sim.sim_algo}/${sim.sim_id}
+
+sim:
+  sim_dir: "outputs"
+  sim_algo: "logreg"
+  sim_id: "0"
+
+env:
+  algorithm: logistic_regression # logistic_regression, decision_trees, gda, perceptron, or naive_bayes
+  position: rb #wr, te, or rb

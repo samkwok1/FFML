@@ -1,0 +1,7 @@
+sim:
+  sim_dir: outputs
+  sim_algo: logreg
+  sim_id: '0'
+env:
+  algorithm: logistic_regression
+  position: rb

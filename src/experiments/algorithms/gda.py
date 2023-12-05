@@ -1,10 +1,8 @@
 import sys
 import numpy as np
 
-sys.path.append('/Users/Sam/Desktop/FFML')
-
-from src.util import dataprocessing as dp
-from src.util import plots
+from util import dataprocessing as dp
+from util import plots
 
 
 rb_train_path = "src/input_data/RBs/all_rb_stats.csv"
@@ -24,9 +22,9 @@ def main(save_path):
     clf = GDA()
     clf.fit(x_train, y_train)
     predictions = clf.predict(x_train)
-    plots.plot(x_test, y_test, clf.theta, 'GDA.png')
-    plots.plot_with_pca(x_test, y_test, clf.theta, 'GDA.png')
-    plots.plot_all_feature_pairs(x_test, y_test, clf.theta, 'GDA.png')
+    plots.plot(x_test, y_test, clf.theta, save_path)
+    plots.plot_with_pca(x_test, y_test, clf.theta, save_path)
+    plots.plot_all_feature_pairs(x_test, y_test, clf.theta, save_path)
 
 
 class GDA:
@@ -93,4 +91,4 @@ class GDA:
         # *** END CODE HERE
 
 if __name__ == '__main__':
-    main('experiments/test')
+    main()

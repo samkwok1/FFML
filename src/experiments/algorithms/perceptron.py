@@ -1,15 +1,12 @@
 import sys
 import numpy as np
 
-sys.path.append('/Users/James/Desktop/FFML')
-
-from src.util import dataprocessing as dp
-from src.util import plots
+from util import dataprocessing as dp
+from util import perceptron_util
 
 # lines 10, 11 imported because they're used in original code
 import math
 import matplotlib.pyplot as plt
-import util
 
 
 rb_train_path = "src/input_data/RBs/all_rb_stats.csv"
@@ -96,7 +93,7 @@ def rbf_kernel(a, b, sigma=1):
     scaled_distance = -distance / (2 * (sigma) ** 2)
     return math.exp(scaled_distance)
 
-def train_perceptron(kernel_name, kernel, learning_rate):
+def train_perceptron(kernel_name, kernel, learning_rate, train_path, save_path, pos):
     """Train a perceptron with the given kernel.
 
     This function trains a perceptron with a given kernel and then
@@ -109,7 +106,7 @@ def train_perceptron(kernel_name, kernel, learning_rate):
         kernel: The kernel function.
         learning_rate: The learning rate for training.
     """
-    x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(te_train_path, 'te', add_intercept=False)
+    x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(train_path, pos, add_intercept=False)
     y_train = np.squeeze(y_train)
     y_test = np.squeeze(y_test)
     #x_train[:, 0] *= 0.5
@@ -131,16 +128,16 @@ def train_perceptron(kernel_name, kernel, learning_rate):
     
     # plot functions using class util
     plt.figure(figsize=(12, 8))
-    util.plot_contour(lambda a: predict(state, kernel, a))
-    util.plot_points(x_test, y_test)
-    plt.savefig('perceptron_{}_output.png'.format(kernel_name))
+    perceptron_util.plot_contour(lambda a: predict(state, kernel, a))
+    perceptron_util.plot_points(x_test, y_test)
+    plt.savefig(save_path)
 
     predict_y = [predict(state, kernel, x_test[i, :]) for i in range(y_test.shape[0])]
 
-    np.savetxt('perceptron_{}_predictions'.format(kernel_name), predict_y)
+    np.savetxt(save_path, predict_y)
 
 
-def main(save_path):
+def main(save_path, train_path, pos):
     """Problem: Kernelizing the Perceptron using rbf as kernel function.
 
     Args:
@@ -149,11 +146,9 @@ def main(save_path):
         save_path: Path to save predicted probabilities using np.savetxt().
     """
     # Load dataset
-    x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(te_train_path, 'te', add_intercept=False)
-    train_perceptron('rbf', rbf_kernel, 0.5)
-    plt.show()
+    train_perceptron('rbf', rbf_kernel, 0.5, train_path, save_path, pos)
 
 
 
 if __name__ == "__main__":
-    main("REPLACE_ME")
+    main()
