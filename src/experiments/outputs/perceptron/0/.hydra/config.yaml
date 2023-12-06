@@ -1,7 +1,7 @@
 sim:
   sim_dir: outputs
-  sim_algo: logreg
+  sim_algo: perceptron
   sim_id: '0'
 env:
-  algorithm: decision_trees
+  algorithm: perceptron
   position: wr

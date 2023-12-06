@@ -3,15 +3,11 @@ import numpy as np
 
 from util import dataprocessing as dp
 from util import perceptron_util
+import os
 
 # lines 10, 11 imported because they're used in original code
 import math
 import matplotlib.pyplot as plt
-
-
-rb_train_path = "src/input_data/RBs/all_rb_stats.csv"
-te_train_path = "src/input_data/tight_ends/all_te_stats.csv"
-wr_train_path = "src/input_data/wrs/all_wr_stats.csv"
 
 
 class state_class:
@@ -109,10 +105,10 @@ def train_perceptron(kernel_name, kernel, learning_rate, train_path, save_path, 
     x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(train_path, pos, add_intercept=False)
     y_train = np.squeeze(y_train)
     y_test = np.squeeze(y_test)
-    #x_train[:, 0] *= 0.5
-    #x_train[:, 1] *= 10
-    #x_test[:, 0] *= 0.5
-    #x_test[:, 1] *= 10
+    # x_train[:, 0] *= 0.5
+    # x_train[:, 1] *= 10
+    # x_test[:, 0] *= 0.5
+    # x_test[:, 1] *= 10
 
     state = initial_state()
 
@@ -130,7 +126,8 @@ def train_perceptron(kernel_name, kernel, learning_rate, train_path, save_path, 
     plt.figure(figsize=(12, 8))
     perceptron_util.plot_contour(lambda a: predict(state, kernel, a))
     perceptron_util.plot_points(x_test, y_test)
-    plt.savefig(save_path)
+    os.makedirs(os.path.dirname(f"{save_path}"), exist_ok=True)
+    plt.savefig("perceptron.png", format='png')
 
     predict_y = [predict(state, kernel, x_test[i, :]) for i in range(y_test.shape[0])]
 
