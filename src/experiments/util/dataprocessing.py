@@ -57,7 +57,7 @@ def load_dataset(filename, position, add_intercept):
 
     # Replace any NaN values with 0
     for col in new_df:
-        new_df[col] = new_df[col].apply(lambda x: 0 if isnan(x) else x)
+        new_df[col] = new_df[col].apply(lambda x: 0 if isnan(x) or np.isinf(x) else x)
 
     # Splitting 60% for training and 40% for temp (which will be further split)
     train_df, temp_df = train_test_split(new_df, test_size=0.4, random_state=42)

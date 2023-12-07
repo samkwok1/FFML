@@ -8,11 +8,11 @@ rb_train_path = "src/input_data/RBs/all_rb_stats.csv"
 te_train_path = "src/input_data/tight_ends/all_te_stats.csv"
 wr_train_path = "src/input_data/wrs/all_wr_stats.csv"
 
-def main():
+def main(save_path, train_path, pos):
     x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(train_path, pos, add_intercept=True)
     nn = NeuralNetwork()
     nn.get_fit(x_train, y_train)
-    nn.get_accuracy(x_valid)
+    y_pred = nn.get_accuracy(x_valid)
     print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
 
 class NeuralNetwork:

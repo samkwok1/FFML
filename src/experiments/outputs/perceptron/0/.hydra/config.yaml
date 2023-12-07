@@ -3,5 +3,5 @@ sim:
   sim_algo: perceptron
   sim_id: '0'
 env:
-  algorithm: perceptron
-  position: wr
+  algorithm: gda
+  position: rb

@@ -3,6 +3,7 @@ import numpy as np
 
 from util import dataprocessing as dp
 from util import plots
+from sklearn import metrics
 
 rb_train_path = "src/input_data/RBs/all_rb_stats.csv"
 te_train_path = "src/input_data/tight_ends/all_te_stats.csv"
@@ -20,10 +21,12 @@ def main(save_path, train_path, pos):
     x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(train_path, pos, add_intercept=True)
     clf = LogisticRegression()
     clf.fit(x_train, y_train)
-    predictions = clf.predict(x_train)
+    predictions_test = clf.predict(x_test)
+    predictions_test = [0 if val < 0.5 else 1 for val in predictions_test]
     # plots.plot(x_test, y_test, clf.theta, 'GDA.png')
     plots.plot_with_pca(x_test[:,1:], y_test, clf.theta, save_path=save_path)
     plots.plot_all_feature_pairs(x_test[:,1:], y_test, clf.theta, save_path, True)
+    print("Accuracy:", metrics.accuracy_score(y_test, predictions_test))
     # *** END CODE HERE ***
 
 class LogisticRegression:

@@ -1,7 +1,0 @@
-sim:
-  sim_dir: outputs
-  sim_algo: logreg
-  sim_id: '0'
-env:
-  algorithm: decision_trees
-  position: wr
