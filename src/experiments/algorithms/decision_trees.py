@@ -12,7 +12,7 @@ from sklearn.svm import SVC
 def main(save_path, train_path, pos):
     x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(train_path, pos, add_intercept=True)
     abc = AdaBC()
-    abc.get_fit(x_train, y_train)
+    abc.get_fit(x_train, np.squeeze(y_train))
     y_pred = abc.get_accuracy(x_test)
     print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
     # some sort of plotting function here

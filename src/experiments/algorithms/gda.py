@@ -3,13 +3,9 @@ import numpy as np
 
 from util import dataprocessing as dp
 from util import plots
+from sklearn import metrics
 
-
-rb_train_path = "src/input_data/RBs/all_rb_stats.csv"
-te_train_path = "src/input_data/tight_ends/all_te_stats.csv"
-wr_train_path = "src/input_data/wrs/all_wr_stats.csv"
-
-def main(save_path):
+def main(save_path, train_path, pos):
     """Problem: Gaussian discriminant analysis (GDA)
 
     Args:
@@ -18,13 +14,15 @@ def main(save_path):
         save_path: Path to save predicted probabilities using np.savetxt().
     """
     # Load dataset
-    x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(rb_train_path, 'rb', add_intercept=False)
+    x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(train_path, pos, add_intercept=False)
     clf = GDA()
     clf.fit(x_train, y_train)
-    predictions = clf.predict(x_train)
-    plots.plot(x_test, y_test, clf.theta, save_path)
-    plots.plot_with_pca(x_test, y_test, clf.theta, save_path)
-    plots.plot_all_feature_pairs(x_test, y_test, clf.theta, save_path)
+    predictions_test = clf.predict(x_test)
+    # plots.plot(x_test, y_test, clf.theta, save_path)
+    # plots.plot_with_pca(x_test, y_test, clf.theta, save_path)
+    # plots.plot_all_feature_pairs(x_test, y_test, clf.theta, save_path)
+    predictions_test = [0 if val < 0.5 else 1 for val in predictions_test]
+    print("Accuracy:", metrics.accuracy_score(y_test, predictions_test))
 
 
 class GDA:
