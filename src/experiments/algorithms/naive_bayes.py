@@ -21,7 +21,7 @@ def main(save_path, train_path, pos):
     results = clf.predict(x_valid)
     print("Accuracy:", np.mean(results == y_valid))
 
-    print((sum(results), np.sum(y_valid)))  # wr: [50%, (1550, 918)], te: [50%, (844, 514)], rb: [50%, (1113, 703)]
+    print((sum(results), np.sum(y_valid)))
 
 if __name__ == '__main__':
     main()
