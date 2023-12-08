@@ -1,8 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 from sklearn.decomposition import PCA
 import itertools
+from sklearn.preprocessing import StandardScaler
 import os
+import seaborn as sns
+import dataprocessing as dp
 
 def sigmoid(z):
     return 1 / (1 + np.exp(-z))
@@ -110,7 +114,6 @@ def plot_all_feature_pairs(x, y, theta, save_path, log_reg, correction=1.0):
         x2 = x2 = -(theta_copy[0] / theta_copy[2] + theta_copy[1] / theta_copy[2] * x1
             + np.log((2 - correction) / correction) / theta_copy[2])
         plt.plot(x1, x2, c='red', label='Decision Boundary', linewidth=2)
-
         # Set axis limits and labels
         for axis in ['top','bottom','left','right']:
             plt.gca().spines[axis].set_linewidth(2)
@@ -127,3 +130,86 @@ def plot_all_feature_pairs(x, y, theta, save_path, log_reg, correction=1.0):
         # Show the plot
         os.makedirs(os.path.dirname(f"{save_path}_{feat_1}_{feat_2}.png"), exist_ok=True)
         plt.savefig(f"pairs_{feat_1}_{feat_2}.png", format="png")
+
+def plot_with_PCA(pos="rb"):
+    if pos == "rb":
+        d_path = "../input_data/RBs/rb_13-22_final.csv"
+    elif pos == "te":
+        d_path = "../input_data/TEs/te_13-22_final.csv"
+    else:
+        d_path = "../input_data/WRs/wr_13-22_final.csv"
+
+    palette = sns.color_palette("mako", 2)
+    x_train, y_train, _, _, _, _= dp.load_dataset(d_path, "", True)
+    df = pd.DataFrame(x_train)
+    labels = pd.DataFrame(y_train)
+    features = df.columns
+    X = df.loc[:, features].values
+    X = StandardScaler().fit_transform(X)
+
+    # Run PCA to reduce to 2 components for plotting
+    pca = PCA(n_components=2)
+    principalComponents = pca.fit_transform(X)
+
+    # Create a DataFrame with the principal components and the labels
+    principalDf = pd.DataFrame(data=principalComponents, columns=['principal component 1', 'principal component 2'])
+    principalDf['label'] = labels.values
+
+    # Plot the two principal components by the class label
+    fig, ax = plt.subplots()
+
+    # Scatter plot for class label 0
+    ax.scatter(principalDf.loc[principalDf['label'] == 0, 'principal component 1'],
+            principalDf.loc[principalDf['label'] == 0, 'principal component 2'],
+            c=palette[0], s=50, label='Class 0', alpha=0.1)
+
+    # Scatter plot for class label 1
+    ax.scatter(principalDf.loc[principalDf['label'] == 1, 'principal component 1'],
+            principalDf.loc[principalDf['label'] == 1, 'principal component 2'],
+            c=palette[1], s=50, label='Class 1', alpha=0.1)
+
+    # Labels, title and legend
+    ax.set_xlabel('Principal Component 1', font="Avenir", size=16)
+    ax.set_ylabel('Principal Component 2', font="Avenir", size=16)
+    ax.set_title('Two component PCA', font="Avenir", size=24)
+    ax.legend(
+        fontsize=14,
+    )
+
+    plt.savefig("outputs/PCA.pdf", format="pdf")
+    plt.clf()
+
+def compare_test_and_train(pos="rb"):
+    pass
+
+def plot_bar_comparison():
+    algorithms = ['GDA', 'LogReg', 'Rand Forests', 'NN', 'SVC']
+    train_accuracies = [0.571, 0.563, 0.599, 0.598, 0.615]
+    test_accuracies = [0.587, 0.588, 0.589, 0.583, 0.597]
+
+    # Define the x locations for the groups
+    ind = np.arange(len(algorithms))
+
+    # The width of the bars
+    width = 0.35       
+    palette = sns.color_palette("mako", 8)
+    # Plotting
+    fig, ax = plt.subplots()
+
+    # Plot the train accuracies
+    train_bars = ax.bar(ind - width/2, train_accuracies, width, label='Train', color=palette[4])
+
+    # Plot the test accuracies
+    test_bars = ax.bar(ind + width/2, test_accuracies, width, label='Test', color=palette[7])
+
+    # Adding labels, title and custom x-axis tick labels, etc.
+    ax.set_ylabel('Accuracy')
+    ax.set_title('Train versus Test Accuracy by Algorithm')
+    ax.set_xticks(ind)
+    ax.set_xticklabels(algorithms, fontsize = 10)
+    ax.legend()
+
+    plt.savefig("outputs/comparison.pdf", format="pdf")
+    plt.clf()
+if __name__ == "__main__":
+    plot_with_PCA()
