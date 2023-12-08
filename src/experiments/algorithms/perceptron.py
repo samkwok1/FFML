@@ -153,6 +153,7 @@ def main(save_path, train_path, pos):
     
     x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(train_path, pos, add_intercept=True)
     y_valid = np.squeeze(y_valid)
+    
     # Visualize pairwise relationships
     for feature1 in range(x_valid.shape[1]):
         for feature2 in range(feature1 + 1, x_valid.shape[1]):
