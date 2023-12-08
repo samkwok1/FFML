@@ -36,22 +36,13 @@ def load_dataset(filename, position, add_intercept):
         return add_intercept(x)
 
     # Enumerate the features we want
-    allowed_col_labels = ['ProjRushYd', 'ProjRushAtt', 'ProjRushTD', 'ProjRecYd', 'ProjRecCount', 'ProjRecTD', 'DiffPPR1']
+    allowed_col_labels = ['ProjRushAtt','ProjRushYd','RushingYardsPerAttempt','ProjRushTD','ReceivingTargets','ProjRecCount','ProjRecYd','ProjRecTD','Fumbles','FumblesLost','DiffPPR1']
 
     # Load Dataset
     df = pd.read_csv(filename)
 
     # Select the features we want
     new_df = df[allowed_col_labels].copy()
-
-    # Divide the needed columns
-    new_df['ProjRushYd'] /= new_df['ProjRushAtt']
-    new_df = new_df.drop('ProjRushAtt', axis=1)
-    new_df.rename(columns={'ProjRushYd':'ProjRushYdPerAtt'}, inplace=True)
-
-    new_df['ProjRecYd'] /= new_df['ProjRecCount']
-    new_df = new_df.drop('ProjRecCount', axis=1)
-    new_df.rename(columns={'ProjRecYd': 'ProjRecYdPerRec'}, inplace=True)
 
     # Change last column to labels
     new_df['DiffPPR1'] = new_df['DiffPPR1'].apply(lambda x: 0 if x < 0 else 1)
@@ -78,15 +69,11 @@ def load_dataset(filename, position, add_intercept):
     # Splitting the temp_df into 50% validation and 50% test (which results in 10% of original data for both)
     valid_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=42, stratify=temp_df["DiffPPR1"])
 
-    if position == 'te' or position == 'wr':
-        x_train, y_train = train_df.iloc[:, [2, 3]].values, train_df.iloc[:, [4]].values
-        x_valid, y_valid = valid_df.iloc[:, [2, 3]].values, valid_df.iloc[:, [4]].values
-        x_test, y_test = test_df.iloc[:, [2, 3]].values, test_df.iloc[:, [4]].values
-    else:
-        # Isolate and return features and labels (x_train, y_train, x_valid, y_valid, x_test, y_test)
-        x_train, y_train = train_df.iloc[:, [0, 1, 2, 3]].values, train_df.iloc[:, [4]].values
-        x_valid, y_valid = valid_df.iloc[:, [0, 1, 2, 3]].values, valid_df.iloc[:, [4]].values
-        x_test, y_test = test_df.iloc[:, [0, 1, 2, 3]].values, test_df.iloc[:, [4]].values
+
+    x_train, y_train = train_df.iloc[:,:-1].values, train_df.iloc[:, [-1]].values
+    x_valid, y_valid = valid_df.iloc[:,:-1].values, valid_df.iloc[:, [-1]].values
+    x_test, y_test = test_df.iloc[:,:-1].values, test_df.iloc[:, [-1]].values
+    # Isolate and return features and labels (x_train, y_train, x_valid, y_valid, x_test, y_test)
 
     if add_intercept == True:
         x_train = add_intercept_fn(np.array(x_train))
