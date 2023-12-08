@@ -69,7 +69,6 @@ def load_dataset(filename, position, add_intercept):
     # Splitting the temp_df into 50% validation and 50% test (which results in 10% of original data for both)
     valid_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=42, stratify=temp_df["DiffPPR1"])
 
-
     x_train, y_train = train_df.iloc[:,:-1].values, train_df.iloc[:, [-1]].values
     x_valid, y_valid = valid_df.iloc[:,:-1].values, valid_df.iloc[:, [-1]].values
     x_test, y_test = test_df.iloc[:,:-1].values, test_df.iloc[:, [-1]].values

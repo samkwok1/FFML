@@ -2,6 +2,9 @@ import pandas as pd
 import sys
 import csv
 
+def calc_ppr(row):
+    return (float(row["RushingYards"]) / 10) + (float(row["RushingTouchdowns"]) * 6) + (float(row["Receptions"])) + (float(row["ReceivingTouchdowns"]) * 6) + (float(row["ReceivingYards"]) / 10)
+
 def make_train_data_pandas(pos):
     if pos == 'rb':
         proj = "../input_data/RBs/rb_13-22_projections_sorted.csv"
@@ -23,6 +26,10 @@ def make_train_data_pandas(pos):
     df_proj = df_proj[~df_mask]
     trimmed_df_proj = df_proj.merge(df_actual[shared_chars], on=shared_chars, how='inner')
     trimmed_df_actual = df_actual.merge(df_proj[shared_chars], on=shared_chars, how='inner')
+
+    trimmed_df_proj["FantasyPoints"] = trimmed_df_proj.apply(calc_ppr, axis=1)
+    trimmed_df_actual["FantasyPoints"] = trimmed_df_actual.apply(calc_ppr, axis=1)
+
     labels_vector = trimmed_df_actual.iloc[:, -1] - trimmed_df_proj.iloc[:, -1]
     trimmed_df_proj.iloc[:, -1] = labels_vector
     ['ProjRushYd', 'ProjRushAtt', 'ProjRushTD', 'ProjRecYd', 'ProjRecCount', 'ProjRecTD', 'DiffPPR1']
