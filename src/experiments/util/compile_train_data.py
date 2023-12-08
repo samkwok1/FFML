@@ -29,7 +29,7 @@ def make_train_data_pandas(pos):
 
     final_dict = make_defense_dict()
 
-    columns = ["TacklesForLoss","Sacks","QuarterbackHits","Interceptions","FumblesRecovered","Safeties","DefensiveTouchdowns","SpecialTeamsTouchdowns","PointsAllowedByDefenseSpecialTeams","FantasyPointsPerGame","FantasyPoints","DefRank"]
+    columns = ["TacklesForLoss","Sacks","QuarterbackHits","Interceptions","FumblesRecovered","Safeties","DefensiveTouchdowns","SpecialTeamsTouchdowns","PointsAllowedByDefenseSpecialTeams","DefFantasyPointsPerGame","DefFantasyPoints","DefRank"]
     list_proj = []
     for i, row in df_proj.iterrows():
         new_row = final_dict[row["Year"] - 2000][row["Opponent"]][int(row["Week"])]["row"]
@@ -42,23 +42,38 @@ def make_train_data_pandas(pos):
         new_row["DefRank"] = final_dict[row["Year"] - 2000][row["Opponent"]][row["Week"]]["rank"]
         list_actual.append(new_row)
 
-    df_list_proj = pd.DataFrame(list_proj)
-    df_list_actual = pd.DataFrame(list_actual)
 
-    df_proj = pd.concat([df_proj, df_list_proj], axis=1, ignore_index=True)
-    df_actual = pd.concat([df_actual, df_list_actual], axis=1, ignore_index=True)
+    df_list_proj = pd.DataFrame(list_proj, columns=columns)
+    df_list_actual = pd.DataFrame(list_actual, columns=columns)
 
+    new_indicies_proj = [i for i in range(len(df_list_proj))]
+    new_indicies_actual = [i for i in range(len(df_list_actual))]
 
-    trimmed_df_proj = df_proj.merge(df_actual[shared_chars], on=shared_chars, how='inner')
-    trimmed_df_actual = df_actual.merge(df_proj[shared_chars], on=shared_chars, how='inner')
+    df_list_proj.index = new_indicies_proj
+    df_proj.index = new_indicies_proj
+
+    df_list_actual.index = new_indicies_actual
+    df_actual.index = new_indicies_actual
+
+    df_combined_proj = pd.concat([df_proj, df_list_proj], axis=1)
+    df_combined_actual = pd.concat([df_actual, df_list_actual], axis=1)
+
+    trimmed_df_proj = df_combined_proj.merge(df_combined_actual[shared_chars], on=shared_chars, how='inner')
+    trimmed_df_actual = df_combined_actual.merge(df_combined_proj[shared_chars], on=shared_chars, how='inner')
 
 
     trimmed_df_proj["FantasyPoints"] = trimmed_df_proj.apply(calc_ppr, axis=1)
     trimmed_df_actual["FantasyPoints"] = trimmed_df_actual.apply(calc_ppr, axis=1)
 
+    saved_column_proj = trimmed_df_proj.pop('FantasyPoints')
+    saved_column_actual = trimmed_df_actual.pop('FantasyPoints')
+
+    trimmed_df_proj["FantasyPoints"] = saved_column_proj
+    trimmed_df_actual["FantasyPoints"] = saved_column_actual
+
     labels_vector = trimmed_df_actual.iloc[:, -1] - trimmed_df_proj.iloc[:, -1]
     trimmed_df_proj.iloc[:, -1] = labels_vector
-    ['ProjRushYd', 'ProjRushAtt', 'ProjRushTD', 'ProjRecYd', 'ProjRecCount', 'ProjRecTD', 'DiffPPR1',"TacklesForLoss","Sacks","QuarterbackHits","Interceptions","FumblesRecovered","Safeties","DefensiveTouchdowns","SpecialTeamsTouchdowns","PointsAllowedByDefenseSpecialTeams","FantasyPointsPerGame","FantasyPoints","DefRank"]
+    ['ProjRushYd', 'ProjRushAtt', 'ProjRushTD', 'ProjRecYd', 'ProjRecCount', 'ProjRecTD', 'DiffPPR1',"TacklesForLoss","Sacks","QuarterbackHits","Interceptions","FumblesRecovered","Safeties","DefensiveTouchdowns","SpecialTeamsTouchdowns","PointsAllowedByDefenseSpecialTeams","DefFantasyPointsPerGame","DefFantasyPoints","DefRank"]
     trimmed_df_proj = trimmed_df_proj.rename(columns={"FantasyPoints": "DiffPPR1",
                                                     "RushingAttempts": 'ProjRushAtt',
                                                     "RushingYards": 'ProjRushYd',
@@ -67,7 +82,7 @@ def make_train_data_pandas(pos):
                                                     "ReceivingTouchdowns": "ProjRecTD",
                                                     "ReceivingYards": "ProjRecYd"})
 
-
+    trimmed_df_proj = trimmed_df_proj.drop_duplicates(keep=False)
     trimmed_df_proj.to_csv(output, index=False)
 
 def make_defense_dict():
