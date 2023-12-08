@@ -68,10 +68,12 @@ class GDA:
             mu = mu_1 if y[i] == 1 else mu_0
             Sigma += (np.outer((x[i] - mu), (x[i] - mu).T) / x.shape[0])
 
-        
+        # to avoid singular matrices
+        epsilon = 1e-5
+        Sigma_inv = np.linalg.inv(Sigma + epsilon * np.eye(Sigma.shape[0]))
 
-        theta_0 = 0.5 * (mu_0.T @ np.linalg.inv(Sigma) @ mu_0 - mu_1.T @ np.linalg.inv(Sigma) @ mu_1) - np.log(phi_0 / phi_1)
-        theta = -np.linalg.inv(Sigma) @ (mu_0 - mu_1)
+        theta_0 = 0.5 * (mu_0.T @ Sigma_inv @ mu_0 - mu_1.T @ Sigma_inv @ mu_1) - np.log(phi_0 / phi_1)
+        theta = -Sigma_inv @ (mu_0 - mu_1)
         self.theta = np.append(theta_0, theta)
         # *** END CODE HERE ***
 
