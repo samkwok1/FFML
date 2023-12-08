@@ -14,10 +14,10 @@ def make_train_data_pandas(pos):
     if pos == 'te':
         proj = "../input_data/TEs/te_13-22_projections_sorted.csv"
         actual = "../input_data/TEs/te_13-22_real_sorted.csv"
-        output = "../input_data/RBs/rb_13-22_final.csv"
+        output = "../input_data/Tes/te_13-22_final.csv"
 
-    df_proj = pd.read_csv(proj)
-    df_actual = pd.read_csv(actual)
+    df_proj = pd.read_csv(proj, header=0)
+    df_actual = pd.read_csv(actual, header=0)
     shared_chars = ['Name', 'Team', 'Position', 'Week', 'Opponent']
     df_mask = (df_proj['RushingAttempts'] == 0) & (df_proj['RushingYards'] == 0) & (df_proj['RushingYardsPerAttempt'] == 0) & (df_proj['RushingTouchdowns'] == 0) & (df_proj['ReceivingTargets'] == 0) & (df_proj['Receptions'] == 0) & (df_proj['ReceivingYards'] == 0) & (df_proj['ReceivingTouchdowns'] == 0)
     df_proj = df_proj[~df_mask]
