@@ -3,100 +3,71 @@ import numpy as np
 
 from util import dataprocessing as dp
 from util import plots
-from sklearn import metrics
-
-rb_train_path = "src/input_data/RBs/all_rb_stats.csv"
-te_train_path = "src/input_data/tight_ends/all_te_stats.csv"
-wr_train_path = "src/input_data/wrs/all_wr_stats.csv"
-
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix
 
 def main(save_path, train_path, pos):
-    """Problem: Logistic regression with Newton's Method.
-
-    Args:
-        train_path: Path to CSV file containing dataset for training.
-        valid_path: Path to CSV file containing dataset for validation.
-        save_path: Path to save predicted probabilities using np.savetxt().
-    """
     x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(train_path, pos, add_intercept=True)
-    clf = LogisticRegression()
-    clf.fit(x_train, y_train)
-    predictions_test = clf.predict(x_test)
-    predictions_test = [0 if val < 0.5 else 1 for val in predictions_test]
-    # plots.plot(x_test, y_test, clf.theta, 'GDA.png')
-    plots.plot_with_pca(x_test[:,1:], y_test, clf.theta, save_path=save_path)
-    plots.plot_all_feature_pairs(x_test[:,1:], y_test, clf.theta, save_path, True)
-    print("Accuracy:", metrics.accuracy_score(y_test, predictions_test))
-    # *** END CODE HERE ***
+    # L1 regularization (lasso)
+    l1_model = LogisticRegression(penalty='l1', solver='liblinear', C=1.0)
 
-class LogisticRegression:
-    """Logistic regression with Newton's Method as the solver.
+    # L2 regularization (ridge)
+    l2_model = LogisticRegression(penalty='l2', solver='liblinear', C=1.0)
 
-    Example usage:
-        > clf = LogisticRegression()
-        > clf.fit(x_train, y_train)
-        > clf.predict(x_eval)
-    """
-    def __init__(self, step_size=0.01, max_iter=1000000, eps=1e-5,
-                 theta_0=None, verbose=True):
-        """
-        Args:
-            step_size: Step size for iterative solvers only.
-            max_iter: Maximum number of iterations for the solver.
-            eps: Threshold for determining convergence.
-            theta_0: Initial guess for theta. If None, use the zero vector.
-            verbose: Print loss values during training.
-        """
-        self.theta = theta_0
-        self.step_size = step_size
-        self.max_iter = max_iter
-        self.eps = eps
-        self.verbose = verbose
+    # Elastic-Net regularization
+    elastic_model = LogisticRegression(penalty='elasticnet', solver='saga', l1_ratio=0.5, C=1.0)
 
-    def fit(self, x, y):
-        """Run Newton's Method to minimize J(theta) for logistic regression.
+    print("L1 Model:")
+    l1_model.fit(x_train, y_train)
+    y_pred = l1_model.predict(x_valid)
+    conf_matrix = confusion_matrix(y_valid, y_pred)
+    TN, FP, FN, TP = conf_matrix.ravel()
 
-        Args:
-            x: Training example inputs. Shape (n_examples, dim).
-            y: Training example labels. Shape (n_examples,).
-        """
-        # *** START CODE HERE ***
-        n_examples, dim = x.shape
-        y = y.reshape(-1)
-        self.theta = np.zeros(dim) # init theta to zeros (dim,)
+    # False Positive Rate = FP / (FP + TN)
+    FPR = FP / (FP + TN)
 
-        for i in range(self.max_iter):
-            h_theta = 1 / (1 + np.exp(-np.dot(x, self.theta)))
-            H = np.matmul(x.T * (h_theta * (1 - h_theta)), x) / n_examples
-            l = np.matmul(x.T, h_theta - y) / n_examples
+    # False Negative Rate = FN / (FN + TP)
+    FNR = FN / (FN + TP)
 
-            prevTheta = self.theta.copy()
-            loss = np.matmul(np.linalg.inv(H), l)
-            self.theta -= loss
+    print(f"False Positive Rate: {FPR}")
+    print(f"False Negative Rate: {FNR}")
+    print("Accuracy:",accuracy_score(y_valid, y_pred))
+    print("**************\n")
 
-            normDiff = np.linalg.norm(self.theta - prevTheta, 1)
-            if self.verbose:
-                print(f"Loss vector for iteration {i}: {loss}")
-                print(f"1-Norm difference for iteration {i}: {normDiff}")
+    print("L2 Model:")
+    l2_model.fit(x_train, y_train)
+    y_pred = l2_model.predict(x_valid)
+    conf_matrix = confusion_matrix(y_valid, y_pred)
+    TN, FP, FN, TP = conf_matrix.ravel()
 
-            # check each iteration starting with right after first
-            if normDiff < self.eps:
-                break
+    # False Positive Rate = FP / (FP + TN)
+    FPR = FP / (FP + TN)
 
-        # *** END CODE HERE ***
+    # False Negative Rate = FN / (FN + TP)
+    FNR = FN / (FN + TP)
 
-    def predict(self, x):
-        """Return predicted probabilities given new inputs x.
+    print(f"False Positive Rate: {FPR}")
+    print(f"False Negative Rate: {FNR}")
+    print("Accuracy:",accuracy_score(y_valid, y_pred))
+    print("**************\n")
 
-        Args:
-            x: Inputs of shape (n_examples, dim).
+    print("L2 Model:")
+    elastic_model.fit(x_train, y_train)
+    y_pred = elastic_model.predict(x_valid)
+    conf_matrix = confusion_matrix(y_valid, y_pred)
+    TN, FP, FN, TP = conf_matrix.ravel()
 
-        Returns:
-            Outputs of shape (n_examples,).
-        """
-        # *** START CODE HERE ***
-        return 1 / (1 + np.exp(-np.dot(x, self.theta)))
-        # *** END CODE HERE ***
+    # False Positive Rate = FP / (FP + TN)
+    FPR = FP / (FP + TN)
+
+    # False Negative Rate = FN / (FN + TP)
+    FNR = FN / (FN + TP)
+
+    print(f"False Positive Rate: {FPR}")
+    print(f"False Negative Rate: {FNR}")
+    print("Accuracy:",accuracy_score(y_valid, y_pred))
+    print("**************\n")
+
 
 if __name__ == '__main__':
     main()

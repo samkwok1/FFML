@@ -34,6 +34,8 @@ def make_train_data_pandas(pos):
                                                     "ReceivingTouchdowns": "ProjRecTD",
                                                     "ReceivingYards": "ProjRecYd"})
 
+    
+
     trimmed_df_proj.to_csv(output, index=False)
 
 def make_train_data_manual(pos):
