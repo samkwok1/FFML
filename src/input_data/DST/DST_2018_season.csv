@@ -1,0 +1,33 @@
+Rank,Name,Team,Position,Played,TacklesForLoss,Sacks,QuarterbackHits,Interceptions,FumblesRecovered,Safeties,DefensiveTouchdowns,SpecialTeamsTouchdowns,PointsAllowedByDefenseSpecialTeams,FantasyPointsPerGamePPR,FantasyPointsPPR
+1,Chicago Bears,CHI,DST,16,98,50,104,27,9,1,6,0,277,11.7,187
+2,Los Angeles Rams,LAR,DST,16,85,41,102,18,12,2,4,1,376,9.4,150
+3,Houston Texans,HOU,DST,16,96,43,96,15,14,0,4,0,316,9.1,146
+4,New England Patriots,NE,DST,16,67,30,99,18,10,0,2,2,325,8.4,135
+5,Baltimore Ravens,BAL,DST,16,93,43,103,12,5,0,3,1,281,8.2,132
+6,Kansas City Chiefs,KC,DST,16,89,52,109,15,12,0,4,1,407,8.1,130
+7,Minnesota Vikings,MIN,DST,16,102.5,50,94,12,8,0,3,0,311,7.8,124
+8,Denver Broncos,DEN,DST,16,83,44,96,17,10,0,2,0,341,7.6,122
+9,Seattle Seahawks,SEA,DST,16,82,43,109,12,14,0,2,0,335,7.6,121
+10,Washington Commanders,WAS,DST,16,81,46,94,15,11,0,1,0,341,7.5,120
+11,Tennessee Titans,TEN,DST,16,85,39,87,11,6,0,2,1,295,7.4,119
+12,Jacksonville Jaguars,JAX,DST,16,89,37,94,11,7,2,2,1,310,7.3,117
+13,Indianapolis Colts,IND,DST,16,110,38,78,15,11,0,0,0,318,7.2,116
+13,Miami Dolphins,MIA,DST,16,79,31,77,21,7,0,3,2,415,7.2,116
+15,Los Angeles Chargers,LAC,DST,16,78,38,85,13,7,0,2,1,317,7,112
+16,Pittsburgh Steelers,PIT,DST,16,96,52,117,8,7,2,3,0,354,6.9,110
+17,Buffalo Bills,BUF,DST,16,109,36,88,16,12,1,0,0,344,6.8,109
+18,New Orleans Saints,NO,DST,16,96,49,101,12,12,0,1,0,347,6.8,108
+19,Arizona Cardinals,ARI,DST,16,118,49,94,7,9,0,2,1,399,6.4,103
+19,New York Jets,NYJ,DST,16,84,39,115,13,7,0,3,2,421,6.4,103
+21,Cleveland Browns,CLE,DST,16,99,37,91,17,15,1,0,0,378,6.2,100
+21,Detroit Lions,DET,DST,16,73,43,78,7,7,0,2,0,342,6.2,100
+23,Dallas Cowboys,DAL,DST,16,88,39,100,9,11,0,1,0,318,6.1,98
+24,Philadelphia Eagles,PHI,DST,16,99,44,133,10,7,0,0,0,342,6.1,97
+25,Green Bay Packers,GB,DST,16,78,44,76,7,8,0,1,1,392,5.8,93
+26,Carolina Panthers,CAR,DST,16,108,35,72,13,9,0,1,0,376,5.5,88
+27,Cincinnati Bengals,CIN,DST,16,71,34,83,12,7,0,5,0,449,5.4,86
+28,New York Giants,NYG,DST,16,86,30,85,16,5,0,3,0,400,5.2,84
+29,Atlanta Falcons,ATL,DST,16,68,37,79,15,4,0,2,0,405,4.9,79
+30,Tampa Bay Buccaneers,TB,DST,16,92,38,95,9,8,0,1,0,438,4.2,68
+31,San Francisco 49ers,SF,DST,16,91,37,93,2,5,1,1,1,409,3.6,58
+32,Las Vegas Raiders,LV,DST,16,59,13,48,14,3,0,1,1,449,2.8,45

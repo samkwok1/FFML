@@ -1,0 +1,33 @@
+Rank,Name,Team,Position,Played,TacklesForLoss,Sacks,QuarterbackHits,Interceptions,FumblesRecovered,Safeties,DefensiveTouchdowns,SpecialTeamsTouchdowns,PointsAllowedByDefenseSpecialTeams,FantasyPointsPerGamePPR,FantasyPointsPPR
+1,Dallas Cowboys,DAL,DST,17,72,41,114,26,9,0,6,3,340,10.7,182
+2,New England Patriots,NE,DST,17,60,36,86,23,7,0,3,0,279,9.3,158
+3,Miami Dolphins,MIA,DST,17,73,48,128,14,14,0,5,1,365,9.1,155
+4,Buffalo Bills,BUF,DST,17,90,42,91,19,11,1,1,0,289,8.7,148
+5,Tampa Bay Buccaneers,TB,DST,17,82,47,127,17,13,0,2,0,341,8.4,143
+6,New Orleans Saints,NO,DST,17,88,46,113,18,7,0,2,0,317,8.3,141
+7,Indianapolis Colts,IND,DST,17,56,33,86,19,16,1,1,2,359,8.1,138
+8,Kansas City Chiefs,KC,DST,17,55,31,91,15,15,0,4,0,358,7.7,131
+9,Arizona Cardinals,ARI,DST,17,76,41,100,13,15,0,2,0,356,7.4,126
+10,Minnesota Vikings,MIN,DST,17,61,51,99,16,9,0,2,2,426,7.2,123
+10,Tennessee Titans,TEN,DST,17,69,43,93,16,6,0,3,0,354,7.2,123
+12,Los Angeles Rams,LAR,DST,17,85,50,95,19,6,0,0,1,342,7.1,121
+13,Green Bay Packers,GB,DST,17,51,39,93,18,10,0,2,0,371,7,119
+14,San Francisco 49ers,SF,DST,17,98,48,103,9,12,0,2,0,363,6.9,118
+15,Denver Broncos,DEN,DST,17,65,36,82,13,6,0,1,0,304,6.6,113
+16,Pittsburgh Steelers,PIT,DST,17,94,55,106,13,10,0,0,1,386,6.4,109
+17,Cincinnati Bengals,CIN,DST,17,80,42,99,13,8,0,2,0,358,6.4,108
+18,Philadelphia Eagles,PHI,DST,17,70,29,83,12,4,0,5,0,377,6.3,107
+18,Chicago Bears,CHI,DST,17,77,49,83,8,9,1,2,1,395,6.3,107
+20,Cleveland Browns,CLE,DST,17,76,43,101,13,7,0,2,0,365,6.2,106
+21,Washington Commanders,WAS,DST,17,59,38,104,11,8,0,3,1,420,5.9,101
+22,Seattle Seahawks,SEA,DST,17,68,34,92,11,7,1,0,1,360,5.5,93
+23,New York Giants,NYG,DST,17,53,34,79,15,9,1,1,0,396,5.4,91
+24,Carolina Panthers,CAR,DST,17,83,39,94,9,8,1,0,1,390,5.2,88
+25,Houston Texans,HOU,DST,17,81,32,71,17,8,1,1,1,452,5.1,87
+26,Baltimore Ravens,BAL,DST,17,76,34,96,9,6,0,1,0,374,4.9,83
+27,Los Angeles Chargers,LAC,DST,17,65,35,88,11,10,0,1,1,441,4.6,78
+28,Las Vegas Raiders,LV,DST,17,65,35,113,6,11,1,0,0,421,4.1,69
+29,Jacksonville Jaguars,JAX,DST,17,63,32,83,7,3,0,1,2,445,3.9,67
+30,Atlanta Falcons,ATL,DST,17,58,18,58,12,8,0,2,0,439,3.6,62
+31,New York Jets,NYJ,DST,17,71,33,88,7,7,0,1,1,498,3.5,59
+32,Detroit Lions,DET,DST,17,58,30,63,11,8,0,0,0,455,3.4,58

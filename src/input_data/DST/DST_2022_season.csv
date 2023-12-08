@@ -1,0 +1,33 @@
+Rank,Name,Team,Position,Played,TacklesForLoss,Sacks,QuarterbackHits,Interceptions,FumblesRecovered,Safeties,DefensiveTouchdowns,SpecialTeamsTouchdowns,PointsAllowedByDefenseSpecialTeams,FantasyPointsPerGamePPR,FantasyPointsPPR
+1,New England Patriots,NE,DST,17,72,54,93,19,12,0,7,1,335,10.9,186
+2,Dallas Cowboys,DAL,DST,17,93,54,110,16,18,0,3,0,324,9.9,168
+3,San Francisco 49ers,SF,DST,17,77,44,121,20,10,0,3,0,267,9.5,161
+4,Philadelphia Eagles,PHI,DST,17,97,70,124,17,10,0,2,0,324,9.1,154
+5,Buffalo Bills,BUF,DST,17,92,40,99,17,10,2,1,2,285,8.8,150
+6,Jacksonville Jaguars,JAX,DST,17,80,35,113,14,13,0,4,0,350,8.2,139
+7,Baltimore Ravens,BAL,DST,17,77,48,95,14,11,0,0,1,309,7.6,130
+8,Kansas City Chiefs,KC,DST,17,85,55,118,11,9,1,2,0,369,7.1,121
+9,Washington Commanders,WAS,DST,17,89,43,108,9,9,1,3,0,329,6.9,118
+10,Indianapolis Colts,IND,DST,17,91,44,90,10,14,0,2,1,397,6.8,116
+11,Green Bay Packers,GB,DST,17,68,34,87,17,7,1,2,1,363,6.8,115
+11,Seattle Seahawks,SEA,DST,17,75,45,98,14,11,0,1,1,387,6.8,115
+13,New York Jets,NYJ,DST,17,81,45,128,12,5,2,0,1,314,6.7,114
+14,Houston Texans,HOU,DST,17,95,39,80,16,12,1,1,0,378,6.6,112
+15,Cincinnati Bengals,CIN,DST,17,54,30,94,13,12,0,1,0,313,6.5,110
+15,Cleveland Browns,CLE,DST,17,68,34,66,11,10,0,3,1,379,6.5,110
+15,New Orleans Saints,NO,DST,17,77,48,87,7,7,0,1,0,321,6.5,110
+18,New York Giants,NYG,DST,17,73,41,106,6,14,0,2,0,369,6.2,106
+19,Carolina Panthers,CAR,DST,17,88,35,90,10,8,0,3,0,362,6.1,104
+20,Pittsburgh Steelers,PIT,DST,17,68,40,83,20,4,0,1,0,340,6.1,103
+21,Los Angeles Rams,LAR,DST,17,68,38,80,16,6,0,1,0,364,6,102
+21,Tampa Bay Buccaneers,TB,DST,17,89,45,104,10,10,0,1,0,358,6,102
+23,Arizona Cardinals,ARI,DST,17,86,36,104,11,9,0,5,0,437,5.9,101
+23,Los Angeles Chargers,LAC,DST,17,76,40,76,14,10,1,1,0,378,5.9,101
+25,Denver Broncos,DEN,DST,17,64,36,81,15,8,1,0,0,341,5.9,100
+26,Minnesota Vikings,MIN,DST,17,81,38,88,15,10,0,1,1,415,5.8,99
+27,Detroit Lions,DET,DST,17,76,39,100,12,10,1,1,1,407,5.7,97
+27,Miami Dolphins,MIA,DST,17,75,40,102,8,6,1,2,1,383,5.7,97
+27,Tennessee Titans,TEN,DST,17,76,39,104,14,7,0,1,0,347,5.7,97
+30,Atlanta Falcons,ATL,DST,17,57,21,69,10,7,1,2,2,386,4.9,83
+31,Las Vegas Raiders,LV,DST,17,63,27,79,6,7,0,3,0,400,4.3,73
+32,Chicago Bears,CHI,DST,17,67,20,43,14,9,0,0,0,451,3.4,57
