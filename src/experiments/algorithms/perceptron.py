@@ -54,6 +54,12 @@ def predict(state, kernel, feature1, feature2, x_i):
     # *** END CODE HERE ***
 
 
+def predict_all(state, kernel, x_i):
+    sum = 0
+    for s in state:
+        sum += (s.beta * kernel(s.x, x_i))
+    return sign(sum)
+
 def update_state(state, kernel, learning_rate, x_i, y_i):
     """Updates the state of the perceptron.
 
@@ -149,17 +155,30 @@ def plot_pairwise_relationships(state, kernel, test_x, test_y, feature1, feature
 
 
 def main(save_path, train_path, pos):
+    """
+    Validation Accuracy:                    Training Accuracy:
+        WR: 0.520618556701031                   WR: 0.5618115055079559
+        TE: 0.5081521739130435                  TE: 0.5515405527865881
+        RB: 0.4972714870395634                  RB: 0.6726931604980385
+    """
     state = train_perceptron('rbf', rbf_kernel, 0.5, train_path, pos)
     
     x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(train_path, pos, add_intercept=True)
+    y_train = np.squeeze(y_train)
     y_valid = np.squeeze(y_valid)
-    
+
+    y_predict = [predict_all(state, rbf_kernel, x_valid[i, :]) for i in range(y_valid.shape[0])]
+    print("Validation Accuracy:", metrics.accuracy_score(y_valid, y_predict))
+
+    y_predict_train = [predict_all(state, rbf_kernel, x_train[i, :]) for i in range(y_train.shape[0])]
+    print("Training Accuracy:", metrics.accuracy_score(y_train, y_predict_train))
+
     # Visualize pairwise relationships
-    for feature1 in range(x_valid.shape[1]):
+    '''for feature1 in range(x_valid.shape[1]):
         for feature2 in range(feature1 + 1, x_valid.shape[1]):
             title = f'Pairwise Relationship: X{feature1} vs X{feature2}'
             plot_pairwise_relationships(state, rbf_kernel, x_valid, y_valid, feature1, feature2, title)
-            plt.show()
+            plt.show()'''
 
 
 
