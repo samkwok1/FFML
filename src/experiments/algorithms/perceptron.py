@@ -1,14 +1,18 @@
-import sys
+import math
+
+import matplotlib.pyplot as plt
 import numpy as np
 
-from util import dataprocessing as dp
-from util import perceptron_util
-import os
+import util
+import numpy as np
+import util
+from sklearn.naive_bayes import GaussianNB
 
-# lines 10, 11 imported because they're used in original code
-import math
+import numpy as np
 import matplotlib.pyplot as plt
-
+from sklearn.neural_network import MLPClassifier
+from util import dataprocessing as dp
+from sklearn import metrics
 
 class state_class:
     def __init__(self, beta, x):
@@ -28,7 +32,7 @@ def initial_state():
     # *** END CODE HERE ***
 
 
-def predict(state, kernel, x_i):
+def predict(state, kernel, feature1, feature2, x_i):
     """Peform a prediction on a given instance x_i given the current state
     and the kernel.
 
@@ -44,7 +48,8 @@ def predict(state, kernel, x_i):
     # *** START CODE HERE ***
     sum = 0
     for s in state:
-        sum += (s.beta * (kernel(s.x, x_i)))
+        a = np.array([s.x[feature1], s.x[feature2]])
+        sum += (s.beta * (kernel(a, x_i)))
     return sign(sum)
     # *** END CODE HERE ***
 
@@ -77,6 +82,7 @@ def sign(a):
     else:
         return 0
 
+
 def rbf_kernel(a, b, sigma=1):
     """An implementation of the radial basis function kernel.
 
@@ -89,7 +95,8 @@ def rbf_kernel(a, b, sigma=1):
     scaled_distance = -distance / (2 * (sigma) ** 2)
     return math.exp(scaled_distance)
 
-def train_perceptron(kernel_name, kernel, learning_rate, train_path, save_path, pos):
+
+def train_perceptron(kernel_name, kernel, learning_rate, train_path, pos):
     """Train a perceptron with the given kernel.
 
     This function trains a perceptron with a given kernel and then
@@ -102,48 +109,56 @@ def train_perceptron(kernel_name, kernel, learning_rate, train_path, save_path, 
         kernel: The kernel function.
         learning_rate: The learning rate for training.
     """
-    x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(train_path, pos, add_intercept=False)
+    x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(train_path, pos, add_intercept=True)
     y_train = np.squeeze(y_train)
-    y_test = np.squeeze(y_test)
-    # x_train[:, 0] *= 0.5
-    # x_train[:, 1] *= 10
-    # x_test[:, 0] *= 0.5
-    # x_test[:, 1] *= 10
-
     state = initial_state()
 
+    index = 0
     for x_i, y_i in zip(x_train, y_train):
+        print(index)
+        index += 1
         update_state(state, kernel, learning_rate, x_i, y_i)
 
-    #predict_y = [predict(state, kernel, x_test[i, :]) for i in range(y_test.shape[0])]
+    return state
 
-    # plot function using sam's util
-    #plots.plot(x_test, y_test, predict_y, 'PERCEPTRON.png')
-    #plots.plot_with_pca(x_test, y_test, predict_y, 'PERCEPTRON.png')
-    #plots.plot_all_feature_pairs(x_test, y_test, predict_y, 'PERCEPTRON.png')
-    
-    # plot functions using class util
-    plt.figure(figsize=(12, 8))
-    perceptron_util.plot_contour(lambda a: predict(state, kernel, a))
-    perceptron_util.plot_points(x_test, y_test)
-    os.makedirs(os.path.dirname(f"{save_path}"), exist_ok=True)
-    plt.savefig("perceptron.png", format='png')
 
-    predict_y = [predict(state, kernel, x_test[i, :]) for i in range(y_test.shape[0])]
+def plot_contour(predict_fn):
+    """Plot a contour given the provided prediction function"""
+    x, y = np.meshgrid(np.linspace(-10, 10, num=20), np.linspace(-10, 10, num=20))
+    z = np.zeros(x.shape)
+    for i in range(x.shape[0]):
+        for j in range(y.shape[1]):
+            print((i, j))
+            z[i, j] = predict_fn([x[i, j], y[i, j]])
 
-    np.savetxt(save_path, predict_y)
+    plt.contourf(x, y, z, levels=[-float('inf'), 0, float('inf')], colors=['orange', 'cyan'])
+
+
+def plot_points(x, y, feature1, feature2):
+    """Plot some points where x are the coordinates and y is the label"""
+    x_one = x[y == 0, :]
+    x_two = x[y == 1, :]
+
+    plt.scatter(x_one[:,feature1], x_one[:,feature2], marker='x', color='red')
+    plt.scatter(x_two[:,feature1], x_two[:,feature2], marker='o', color='blue')
+
+
+def plot_pairwise_relationships(state, kernel, test_x, test_y, feature1, feature2, title):
+    plot_contour(lambda a: predict(state, kernel, feature1, feature2, a))
+    plot_points(test_x, test_y, feature1, feature2)
 
 
 def main(save_path, train_path, pos):
-    """Problem: Kernelizing the Perceptron using rbf as kernel function.
-
-    Args:
-        train_path: Path to CSV file containing dataset for training.
-        valid_path: Path to CSV file containing dataset for validation.
-        save_path: Path to save predicted probabilities using np.savetxt().
-    """
-    # Load dataset
-    train_perceptron('rbf', rbf_kernel, 0.5, train_path, save_path, pos)
+    state = train_perceptron('rbf', rbf_kernel, 0.5, train_path, pos)
+    
+    x_train, y_train, x_valid, y_valid, x_test, y_test = dp.load_dataset(train_path, pos, add_intercept=True)
+    y_valid = np.squeeze(y_valid)
+    # Visualize pairwise relationships
+    for feature1 in range(x_valid.shape[1]):
+        for feature2 in range(feature1 + 1, x_valid.shape[1]):
+            title = f'Pairwise Relationship: X{feature1} vs X{feature2}'
+            plot_pairwise_relationships(state, rbf_kernel, x_valid, y_valid, feature1, feature2, title)
+            plt.show()
 
 
 
