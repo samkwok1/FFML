@@ -21,7 +21,7 @@ def add_intercept(x):
     new_x[:, 1:] = x
     return new_x
 
-def load_dataset(filename, position, add_intercept, method="rid"):
+def load_dataset(filename, pos, add_intercept, method="rid"):
     """
     Takes in a dataset and deletes the unnecessary columns. This includes all columns that 
     contain non-projection information, half and zero PPR columns, and columns that have the
@@ -67,13 +67,13 @@ def load_dataset(filename, position, add_intercept, method="rid"):
     # Yeo-Johnson transformation
     yeo_johnson_transformed = scaler.fit_transform(new_df.iloc[:,:-1])
 
-    # Standard Scaler
-    standard_scaled = standard_scaler.fit_transform(yeo_johnson_transformed)
+    # # Standard Scaler
+    # standard_scaled = standard_scaler.fit_transform(new_df.iloc[:,:-1])
 
-    # Min-Max Scaler
-    min_max_scaled = min_max_scaler.fit_transform(standard_scaled)
+    # # # Min-Max Scaler
+    # min_max_scaled = min_max_scaler.fit_transform(new_df.iloc[:,:-1])
 
-    # Recombine with the labels
+    # # Recombine with the labels
     new_df.iloc[:,:-1] = yeo_johnson_transformed
     #### Gets rid of samples ######
     if method == "rid":
