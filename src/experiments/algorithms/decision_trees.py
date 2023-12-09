@@ -2,7 +2,6 @@ import sys
 import numpy as np
 
 from util import dataprocessing as dp
-from util import plots
 
 from sklearn.ensemble import AdaBoostClassifier, RandomForestClassifier
 from sklearn import datasets

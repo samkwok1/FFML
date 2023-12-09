@@ -2,7 +2,6 @@ import sys
 import numpy as np
 
 from util import dataprocessing as dp
-from util import plots
 from sklearn import metrics
 
 def main(save_path, train_path, pos):
@@ -18,6 +17,9 @@ def main(save_path, train_path, pos):
     clf = GDA()
     clf.fit(x_train, y_train)
     predictions_test = clf.predict(x_test)
+    predictions_train = clf.predict(x_train)
+    predictions_train = [0 if val < 0.5 else 1 for val in predictions_train]
+    print(metrics.accuracy_score(y_train, predictions_train))
     # plots.plot(x_test, y_test, clf.theta, save_path)
     # plots.plot_with_pca(x_test, y_test, clf.theta, save_path)
     # plots.plot_all_feature_pairs(x_test, y_test, clf.theta, save_path)
