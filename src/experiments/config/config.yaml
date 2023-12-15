@@ -8,5 +8,5 @@ sim:
   sim_id: "0"
 
 env:
-  algorithm: gda # logistic_regression, decision_trees, gda, perceptron, neural_network, or naive_bayes
+  algorithm: perceptron # logistic_regression, decision_trees, gda, perceptron, neural_network, or naive_bayes
   position: rb #wr, te, or rb

@@ -183,9 +183,9 @@ def compare_test_and_train(pos="rb"):
     pass
 
 def plot_bar_comparison():
-    algorithms = ['GDA', 'LogReg', 'Rand Forests', 'NN', 'SVC']
-    train_accuracies = [0.571, 0.563, 0.599, 0.598, 0.615]
-    test_accuracies = [0.587, 0.588, 0.589, 0.583, 0.597]
+    algorithms = ['GDA', 'Naive Bayes', 'LogReg', 'Rand Forests', 'NN', 'SVC']
+    train_accuracies = [0.571, 0.553, 0.563, 0.599, 0.598, 0.615]
+    test_accuracies = [0.587, 0.56, 0.588, 0.589, 0.593, 0.598]
 
     # Define the x locations for the groups
     ind = np.arange(len(algorithms))
@@ -212,4 +212,4 @@ def plot_bar_comparison():
     plt.savefig("outputs/comparison.pdf", format="pdf")
     plt.clf()
 if __name__ == "__main__":
-    plot_with_PCA()
+    plot_bar_comparison()

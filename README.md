@@ -1,1 +1,56 @@
-# FFML
+## FFML - Fantasy Football for Machine Learning
+<!-- 
+### What is this?
+
+
+#### 🔀 Background
+
+
+
+#### We want to predict fantasy success for particular player for any given week of the NFL season. To do so, we created a dataset and tested many different algorithms.
+ -->
+
+
+### 📂 Repro structure
+
+```
+├── src                  
+│   └── scai      
+│       ├── agents
+│       ├── prompts
+│       ├── context
+│       └── memory
+├── docs                
+│   ├── build            
+│   └── source           
+├── experiments    
+│   ├── simulator
+│       ├── config  
+│       ├── custom_chat_models
+│       └── sim_res
+├── LICENSE              
+├── requirements.txt      
+└── .gitignore           
+```
+
+
+### 📖 Documentation
+<a name="documentation"></a>
+
+#### 🚀 Getting started 
+##### Using miniforge
+1. install miniforge from `https://github.com/conda-forge/miniforge` (eg `Miniforge3-MacOSX-arm64`)
+2. `bash Miniforge3-MacOSX-arm64.sh`
+3. close terminal
+4. `conda create --name name-of-my-env python==3.10`
+5. `conda activate name-of-my-env`
+6. `pip install -e .` 
+
+<!-- ##### Using poetry (will update this later)
+1. `curl -sSL https://install.python-poetry.org | python -`
+2. `export PATH="/Users/YOUR_NAM/.local/bin:$PATH`
+3. `poetry install` -->
+
+#### 📖 Updating Docs
+1. `sphinx-build -b html docs/source docs/build` (build)
+2. `open docs/build/index.html` (open)

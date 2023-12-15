@@ -40,17 +40,17 @@ def main(save_path, train_path, pos):
 
 
     # Naive Bayes
-    '''clf = GaussianNB()
+    clf = GaussianNB()
     clf.fit(x_train, y_train)
-    GaussianNB()'''
+    GaussianNB()
 
 
 
     # SVC:  WR: (v: 0.5363583478766725, t: 0.5479272727272727)      same
     #       TE: (v: 0.5848849945235487, t: 0.5653661875427789)      same
     #       RB: (v: 0.5614973262032086, t: 0.5830230115535185)      v up t down (basically swapped)
-    clf = make_pipeline(StandardScaler(), SVC(gamma='auto', kernel='poly'))
-    clf.fit(x_train, y_train)
+    # clf = make_pipeline(StandardScaler(), SVC(gamma='auto', kernel='poly'))
+    # clf.fit(x_train, y_train)
 
 
     # Linear SVC:   WR: (v: 0.5136707388016288, t: 0.5296)
@@ -71,8 +71,8 @@ def main(save_path, train_path, pos):
     #print(clf.named_steps['sgdclassifier'].intercept_)
 
     # validation accuracy: (wr, ), (te, ), (rb, )
-    results = clf.predict(x_test)
-    print("Test Accuracy:", metrics.accuracy_score(y_test, results))
+    results = clf.predict(x_train)
+    print("Test Accuracy:", metrics.accuracy_score(y_train, results))
     print("F1 score:", metrics.f1_score(y_test, results))
     print("Recall Score:", metrics.recall_score(y_test, results))
     print("Precision score:", metrics.precision_score(y_test, results))
